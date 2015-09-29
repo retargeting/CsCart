@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>retargeting</id>
+    <version>1.0</version>
+    <priority>3000</priority>
+    <position>300</position>
+    <auto_install>MULTIVENDOR,ULTIMATE</auto_install>
+    <name>Retargeting</name>
+    <description>Retargeting</description>
+    <priority>20333</priority>
+    <settings>
+        <sections>
+            <section id="general">
+                <items>
+                    <item id="header">
+                        <type>header</type>
+                        <name>Retargeting Tracking Code</name>
+                    </item>
+                    <item id="retargeting_domain_api">
+                        <name>Retargeting Domain API Key</name>
+                        <type>input</type>
+                    </item>
+                    <item id="retargeting_discounts_api">
+                        <name>Retargeting Discounts API Key</name>
+                        <type>input</type>
+                    </item>
+                    <item id="help_pages">
+                        <name>Help Pages</name>
+                        <type>input</type>
+                    </item>
+                </items>
+            </section>
+        </sections>
+    </settings>
+</addon>
