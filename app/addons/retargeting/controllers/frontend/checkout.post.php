@@ -13,7 +13,7 @@ if($mode == 'complete'){
 	Registry::get('view')->assign('orders_info', $orders_info);
 }
 
-if($mode == 'cart'){
+if($mode == 'checkout' || $mode == 'cart'){
 	$checkoutIds = array();
 	
 	foreach ($_SESSION['cart']['products'] as $product) {
