@@ -29,4 +29,8 @@ _ra.saveOrderProducts = [
     ]
 {/foreach}
 
+if( _ra.ready !== undefined ){
+            _ra.saveOrder(_ra.saveOrderInfo, _ra.saveOrderProducts);
+}
+	
 </script>
