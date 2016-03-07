@@ -19,6 +19,6 @@ if($mode == 'view' && !empty($_REQUEST['product_id'])){
         }
 
         list($products) = fn_get_products(array('pid'=>$product_id));
-        Registry::get('view')->assign('ra_oldPrice', $products[0]['price']);
+        (!empty($products[0]['price'])) ? Registry::get('view')->assign('ra_oldPrice', $products[0]['price']) : "";
     }
 }
