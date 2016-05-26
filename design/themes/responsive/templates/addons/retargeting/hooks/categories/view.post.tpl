@@ -4,7 +4,7 @@ var _ra = _ra || {};
 		"id": {$catid},
 		"name" : "{$catn}",
 		"parent": false,
-		"category_breadcrumb": []
+		"breadcrumb": []
 	}
 	if (_ra.ready !== undefined) {
 		_ra.sendCategory(_ra.sendCategoryInfo);

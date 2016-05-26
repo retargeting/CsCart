@@ -8,3 +8,13 @@
 	}
 </script>
 {/if}
+<script>
+	var _ra = _ra || {};
+    _ra.setCartUrlInfo = {
+		"url": window.location.toString()
+    };
+    
+    if (_ra.ready !== undefined) {
+		_ra.setCartUrl(_ra.setCartUrlInfo.url);
+    }
+</script>

@@ -14,6 +14,8 @@ _ra.saveOrderInfo = {
             "discount_code" : "",
             "discount"      : "{$retargeting_order_info.discount}",
             "shipping"      : "{$retargeting_order_info.shipping_cost}",
+            "rebates"       : 0,
+            "fees"          : 0,
             "total"         : "{$retargeting_order_info.total}"
         };
         
