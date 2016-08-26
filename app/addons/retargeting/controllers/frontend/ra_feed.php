@@ -40,11 +40,12 @@ header("Content-type: text/xml");
 		echo '
 			<product>
 				<id>'.$product['product_id'].'</id>
-				<stock>'.($product['amount'] > 0 ? 1 : 0).'</stock>
 				<price>'.($product['list_price'] != 0 ? $product['list_price'] : $product['price']).'</price>
 				<promo>'.($product['list_price'] != 0 ? $product['price'] : $product['list_price']).'</promo>
-				<url>'.$product_url.'/'.$category_path.'/'.$product_data['seo_name'].'</url>
-				<image>'.$product_data['main_pair']['detailed']['http_image_path'].'</image>
+				<inventory>
+					<variations>false</variations>
+					<stock>'.($product['amount'] > 0 ? 1 : 0).'</stock>
+				</inventory>
 			</product>';
 	}
 

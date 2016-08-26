@@ -2,20 +2,20 @@
 
 <script type="text/javascript">
 	(function(){
-	var ra_key = "{$addons.retargeting.retargeting_domain_api}";
+	ra_key = "{$addons.retargeting.retargeting_domain_api}";
+ 	ra_params = {
+		add_to_cart_button_id: ".ty-btn__add-to-cart",
+		price_label_id: ".new-price",
+	};
 	var ra = document.createElement("script"); ra.type ="text/javascript"; ra.async = true; ra.src = ("https:" ==
-	document.location.protocol ? "https://" : "http://") + "retargeting-data.eu/rajs/" + ra_key + ".js";
+	document.location.protocol ? "https://" : "http://") + "tracking.retargeting.biz/v3/rajs/" + ra_key + ".js";
 	var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ra,s);})();
 </script>
 
 {else}
 
 <script type="text/javascript">
-	(function(){
-	var ra = document.createElement("script"); ra.type ="text/javascript"; ra.async = true; ra.src = ("https:" ==
-	document.location.protocol ? "https://" : "http://") + "retargeting-data.eu/" +
-	document.location.hostname.replace("www.","") + "/ra.js"; var s =
-	document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ra,s);})();
+	console.info("Retargeting Tracker Error: Please set the Domain API Key from your Retargeting Account.");
 </script>
 
 {/if}

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
     <id>retargeting</id>
-    <version>1.0</version>
+    <version>1.1</version>
     <priority>3000</priority>
     <position>300</position>
     <auto_install>MULTIVENDOR,ULTIMATE</auto_install>
@@ -11,22 +11,67 @@
     <settings>
         <sections>
             <section id="general">
+                <name>Retargeting Basic Settings</name>
                 <items>
                     <item id="header">
                         <type>header</type>
                         <name>Retargeting Tracking Code</name>
                     </item>
                     <item id="retargeting_domain_api">
-                        <name>Retargeting Domain API Key</name>
+                        <name>Tracking API Key</name>
                         <type>input</type>
                     </item>
                     <item id="retargeting_discounts_api">
-                        <name>Retargeting Discounts API Key</name>
+                        <name>Retargeting REST API Key</name>
                         <type>input</type>
                     </item>
                     <item id="help_pages">
                         <name>Help Pages</name>
                         <type>input</type>
+                    </item>
+                </items>
+            </section>
+            <section id="configuration">
+                <name>Retargeting Tracker Options</name>
+                <items>
+                    <item id="header">
+                        <type>header</type>
+                        <name>JavaScript Query Selectors [Experimental]</name>
+                    </item>
+                    <item id="retargeting_qs_addToCart">
+                        <name>Add To Cart Button</name>
+                        <type>input</type>
+                        <default_value>[id^="button_cart_"]</default_value>
+                    </item>
+                    <item id="retargeting_qs_variation">
+                        <name>Product Variants Buttons</name>
+                        <type>input</type>
+                        <default_value>[id^="option_::product_id::}_"]</default_value>
+                    </item>
+                    <item id="retargeting_qs_addToWishlist">
+                        <name>Add To Wishlist Button</name>
+                        <type>input</type>
+                        <default_value>[id^="button_wishlist_"]</default_value>
+                    </item>
+                    <item id="retargeting_qs_productImages">
+                        <name>Product Images</name>
+                        <type>input</type>
+                        <default_value>.ty-previewer</default_value>
+                    </item>
+                    <item id="retargeting_qs_review">
+                        <name>Submit Review Button</name>
+                        <type>input</type>
+                        <default_value></default_value>
+                    </item>
+                    <item id="retargeting_qs_price">
+                        <name>Product Price</name>
+                        <type>input</type>
+                        <default_value></default_value>
+                    </item>
+                    <item id="retargeting_qs_oldPrice">
+                        <name>Product Old Price</name>
+                        <type>input</type>
+                        <default_value></default_value>
                     </item>
                 </items>
             </section>
