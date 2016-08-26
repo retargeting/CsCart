@@ -4,8 +4,8 @@
 	(function(){
 	ra_key = "{$addons.retargeting.retargeting_domain_api}";
  	ra_params = {
-		add_to_cart_button_id: "{$addons.retargeting.retargeting_qs_addToCart}",
-		price_label_id: "{$addons.retargeting.retargeting_qs_price}",
+		add_to_cart_button_id: ".ty-btn__add-to-cart",
+		price_label_id: ".new-price",
 	};
 	var ra = document.createElement("script"); ra.type ="text/javascript"; ra.async = true; ra.src = ("https:" ==
 	document.location.protocol ? "https://" : "http://") + "tracking.retargeting.biz/v3/rajs/" + ra_key + ".js";
