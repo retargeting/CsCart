@@ -51,22 +51,22 @@ function raClickImage(){
 }
 
 _ra_helper_addLoadEvent(function(){
-	var raCartBtn = document.querySelectorAll("{$addons.retargeting.retargeting_qs_addToCart}");
+	var raCartBtn = document.querySelector("[id^='button_cart_']");
 	if(raCartBtn !== null){
 		raCartBtn.addEventListener('click', function(){
 			_ra.addToCart('{$product.product_id}', 1, _ra_getVariation());
 		});
 	}
 
-	var raWishlist = document.querySelectorAll("{$addons.retargeting.retargeting_qs_addToWishlist}");
+	var raWishlist = document.querySelector("[id^='button_wishlist_']");
 	if(raWishlist !== null){
 		raWishlist.addEventListener('click', function(){
 			_ra.addToWishlist('{$product.product_id}');
 		});
 	}
 	
-	if(document.querySelectorAll("{$addons.retargeting.retargeting_qs_productImages}") !== null){
-		document.querySelectorAll("{$addons.retargeting.retargeting_qs_productImages}")[0].onclick = raClickImage;
+	if(document.querySelector("{$addons.retargeting.retargeting_qs_productImages}") !== null){
+		document.querySelector("{$addons.retargeting.retargeting_qs_productImages}")[0].onclick = raClickImage;
 	}
 
 	if(typeof FB !== "undefined"){
@@ -78,7 +78,7 @@ _ra_helper_addLoadEvent(function(){
 
 // setVariation
 var _ra_productId = {$product.product_id};
-var _ra_arr = document.querySelectorAll("{$addons.retargeting.retargeting_qs_variation|replace:'::product_id::':$product.product_id}");
+var _ra_arr = document.querySelector("[id^='option_::product_id::}_']");
 
 for (var i=0; i < _ra_arr.length; i++) {
 	if (_ra_arr[i].type === 'textarea' || _ra_arr[i].type === 'text' ) {
@@ -128,7 +128,7 @@ function _ra_setVariation(option){
 }
 
 function _ra_getVariation() {
-	var _ra_arr = document.querySelectorAll("{$addons.retargeting.retargeting_qs_variation|replace:'::product_id::':$product.product_id}");
+	var _ra_arr = document.querySelectorAll("[id^='option_::product_id::}_']");
 	var _ra_variation = false,
 		_ra_arr_code = [],
 		_ra_arr_details = [];
@@ -173,7 +173,7 @@ function _ra_getVariation() {
 	if (_ra_arr_code.length > 0) {
 		res = {
 			"code": _ra_arr_code.join('-'),
-			"stock": "{$product_amount = $product.inventory_amount|default:$product.amount}{if ($product_amount <= 0 || $product_amount < $product.min_qty) && $settings.General.inventory_tracking == "Y"}0{else}1{/if}"
+			"stock": "{$product_amount = $product.inventory_amount|default:$product.amount}{if ($product_amount <= 0 || $product_amount < $product.min_qty) && $settings.General.inventory_tracking == "Y"}0{else}1{/if}",
 			"details": _ra_arr_details
 		};
 	}
