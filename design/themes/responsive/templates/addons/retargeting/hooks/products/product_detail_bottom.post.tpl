@@ -80,34 +80,36 @@ _ra_helper_addLoadEvent(function(){
 var _ra_productId = {$product.product_id};
 var _ra_arr = document.querySelector("[id^='option_::product_id::}_']");
 
-for (var i=0; i < _ra_arr.length; i++) {
-	if (_ra_arr[i].type === 'textarea' || _ra_arr[i].type === 'text' ) {
-		_ra_arr[i].addEventListener('change',function(){
-			_ra_setVariation();
-		});
-	} else if (_ra_arr[i].type === 'select-one') {
-		// for (var j = 0; j < _ra_arr[i].childNodes.length; j++){
-		// 	_ra_arr[i].childNodes[j].addEventListener('click', function(){
-		// 		_ra_setVariation(this);
-		// 	});
-		// }
+if (_ra_arr !== null) {
+	for (var i=0; i < _ra_arr.length; i++) {
+		if (_ra_arr[i].type === 'textarea' || _ra_arr[i].type === 'text' ) {
+			_ra_arr[i].addEventListener('change',function(){
+				_ra_setVariation();
+			});
+		} else if (_ra_arr[i].type === 'select-one') {
+			// for (var j = 0; j < _ra_arr[i].childNodes.length; j++){
+			// 	_ra_arr[i].childNodes[j].addEventListener('click', function(){
+			// 		_ra_setVariation(this);
+			// 	});
+			// }
 
-function _ra_onchangeModifier(onchange, element){
-	return function(evt){
-		evt = evt || event;
-		var el  = this;
+	function _ra_onchangeModifier(onchange, element){
+		return function(evt){
+			evt = evt || event;
+			var el  = this;
 
-		if (onchange) {
-			onchange(evt);
-			// element.onchange = _ra_onchangeModifier(element.onchange, element);
+			if (onchange) {
+				onchange(evt);
+				// element.onchange = _ra_onchangeModifier(element.onchange, element);
+			}
 		}
 	}
-}
-		_ra_arr[i].onchange = _ra_onchangeModifier(_ra_arr[i].onchange, _ra_arr[i]);
-	} else if (_ra_arr[i].type === 'radio' || _ra_arr[i].type === 'checkbox'){
-		_ra_arr[i].addEventListener('click',function(){
-			_ra_setVariation();
-		});
+			_ra_arr[i].onchange = _ra_onchangeModifier(_ra_arr[i].onchange, _ra_arr[i]);
+		} else if (_ra_arr[i].type === 'radio' || _ra_arr[i].type === 'checkbox'){
+			_ra_arr[i].addEventListener('click',function(){
+				_ra_setVariation();
+			});
+		}
 	}
 }
 
