@@ -18,7 +18,7 @@ function _ra_helper_addLoadEvent(func){
 	_ra.sendProductInfo = {
 		"id": "{$product.product_id}",
 		"name": "{$product.product}",
-		"url": "{$config.current_url|fn_url}",
+		"url": window.location.origin + window.location.pathname,
 		"img": "{$product.main_pair.detailed.image_path}",
 		{if $ra_oldPrice == $product.price or not is_numeric($ra_oldPrice)}
 		"price": "{if $product.list_price > $product.price}{$product.list_price}{else}{$product.price}{/if}",
