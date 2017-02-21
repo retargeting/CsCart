@@ -66,7 +66,7 @@ _ra_helper_addLoadEvent(function(){
 	}
 	
 	if(document.querySelector("{$addons.retargeting.retargeting_qs_productImages}") !== null){
-		document.querySelector("{$addons.retargeting.retargeting_qs_productImages}")[0].onclick = raClickImage;
+		document.querySelector("{$addons.retargeting.retargeting_qs_productImages}").onclick = raClickImage;
 	}
 
 	if(typeof FB !== "undefined"){
