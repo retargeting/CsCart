@@ -1,3 +1,4 @@
+{if $addons.retargeting.retargeting_domain_api}
 {if $retargeting_set_email}
 <script>
 
@@ -34,3 +35,4 @@ if (_ra.ready !== undefined) {
 		}
 	}
 </script>
+{/if}

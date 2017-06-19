@@ -1,3 +1,4 @@
+{if $addons.retargeting.retargeting_domain_api}
 <script>
 var _ra = _ra || {};
 	_ra.sendCategoryInfo = {
@@ -10,3 +11,4 @@ var _ra = _ra || {};
 		_ra.sendCategory(_ra.sendCategoryInfo);
 	}
 </script>
+{/if}

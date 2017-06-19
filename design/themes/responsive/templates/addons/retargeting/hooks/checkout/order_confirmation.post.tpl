@@ -1,3 +1,4 @@
+{if $addons.retargeting.retargeting_domain_api}
 <script type="text/javascript">
 var _ra = _ra || {};
 
@@ -36,3 +37,4 @@ if( _ra.ready !== undefined ){
 }
 	
 </script>
+{/if}

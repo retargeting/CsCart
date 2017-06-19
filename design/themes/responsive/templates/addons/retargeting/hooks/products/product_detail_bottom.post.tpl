@@ -1,3 +1,4 @@
+{if $addons.retargeting.retargeting_domain_api}
 <script>
 function _ra_helper_addLoadEvent(func){
 	var oldonload = window.onload;
@@ -182,3 +183,4 @@ function _ra_getVariation() {
 	return res;
 }
 </script>
+{/if}
