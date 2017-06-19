@@ -8,7 +8,7 @@
     <name>Retargeting</name>
     <description>Retargeting</description>
     <priority>20333</priority>
-    <settings>
+    <settings edition_type="ROOT,ULT:VENDOR">
         <sections>
             <section id="general">
                 <name>Retargeting Basic Settings</name>
