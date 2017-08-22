@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
     <id>retargeting</id>
-    <version>1.1</version>
+    <version>1.2</version>
     <priority>3000</priority>
     <position>300</position>
     <auto_install>MULTIVENDOR,ULTIMATE</auto_install>
-    <name>Retargeting</name>
-    <description>Retargeting</description>
+    <name>Retargeting Tracker</name>
+    <description>Retargeting is a marketing automation tool that boosts the conversion rate and sales of your online store.</description>
     <priority>20333</priority>
     <settings edition_type="ROOT,ULT:VENDOR">
         <sections>
             <section id="general">
-                <name>Retargeting Basic Settings</name>
+                <name>Retargeting Tracker Basic Settings</name>
                 <items>
                     <item id="header">
                         <type>header</type>
@@ -22,11 +22,15 @@
                         <type>input</type>
                     </item>
                     <item id="retargeting_discounts_api">
-                        <name>Retargeting REST API Key</name>
+                        <name>REST API Key</name>
                         <type>input</type>
                     </item>
                     <item id="help_pages">
                         <name>Help Pages</name>
+                        <type>input</type>
+                    </item>
+                    <item id="cart_url">
+                        <name>Cart URL</name>
                         <type>input</type>
                     </item>
                 </items>
@@ -46,7 +50,7 @@
                     <item id="retargeting_qs_variation">
                         <name>Product Variants Buttons</name>
                         <type>input</type>
-                        <default_value>[id^="option_::product_id::}_"]</default_value>
+                        <default_value>[id^='option_']</default_value>
                     </item>
                     <item id="retargeting_qs_addToWishlist">
                         <name>Add To Wishlist Button</name>
