@@ -79,7 +79,7 @@ _ra_helper_addLoadEvent(function(){
 
 // setVariation
 var _ra_productId = {$product.product_id};
-var _ra_arr = document.querySelector("[id^='option_::product_id::}_']");
+var _ra_arr = document.querySelector("[id^='option_']");
 
 if (_ra_arr !== null) {
 	for (var i=0; i < _ra_arr.length; i++) {
@@ -131,7 +131,7 @@ function _ra_setVariation(option){
 }
 
 function _ra_getVariation() {
-	var _ra_arr = document.querySelectorAll("[id^='option_::product_id::}_']");
+	var _ra_arr = document.querySelectorAll("[id^='option_']");
 	var _ra_variation = false,
 		_ra_arr_code = [],
 		_ra_arr_details = [];

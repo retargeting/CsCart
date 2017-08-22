@@ -50,7 +50,7 @@
                     <item id="retargeting_qs_variation">
                         <name>Product Variants Buttons</name>
                         <type>input</type>
-                        <default_value>[id^="option_::product_id::}_"]</default_value>
+                        <default_value>[id^='option_']</default_value>
                     </item>
                     <item id="retargeting_qs_addToWishlist">
                         <name>Add To Wishlist Button</name>
