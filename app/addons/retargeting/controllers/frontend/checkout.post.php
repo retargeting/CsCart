@@ -37,8 +37,8 @@ if($mode == 'complete'){
     foreach ($order_info['products'] as $product) {
         $productDetails = array(
             'id' => $product['product_id'],
-            'name' => $product['product'],
             'quantity' => $product['amount'],
+            'price' => $product['price'],
             'variation_code' => ''
         );
         $productsArray['line_items'][] = $productDetails;
