@@ -1,6 +1,6 @@
 <?php
 
-require(dirname(__FILE__) . '\Retargeting_REST_API_Client.php');
+require('Retargeting_REST_API_Client.php');
 
 use Tygh\Registry;
 use Tygh\Settings;
@@ -44,7 +44,7 @@ if($mode == 'complete'){
         $productsArray['line_items'][] = $productDetails;
     }
 
-    $discountApi = Settings::instance()->getValue('retargeting_discounts_api','google_analytics');
+    $discountApi = Settings::instance()->getValue('retargeting_discounts_api','retargeting');
 
     if ($discountApi && $discountApi != '') {
         $orderClient = new Retargeting_REST_API_Client($discountApi);
