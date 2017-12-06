@@ -50,7 +50,7 @@
             var raCartBtn = document.querySelector("[id^='button_cart_']");
             if (raCartBtn !== null) {
                 raCartBtn.addEventListener('click', function () {
-                    _ra.addToCart('{$product.product_id}', 1, _ra_getVariation());
+                    _ra.addToCart('{$product.product_id}', 1, false);
                 });
             }
 
