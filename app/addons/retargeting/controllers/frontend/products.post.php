@@ -11,10 +11,16 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
     $currencies = Registry::get('currencies');
     $coefficient = 1;
 
-    foreach ($currencies as $currency) {
-        if ($currency['status'] == 'A') {
-            $coefficient = $currency['coefficient'];
-        }
+    $priceFilterData = fn_get_product_filter_fields();
+
+    if (array_key_exists($priceFilterData['P']['extra'], $currencies)) {
+        $activeCurrency = $priceFilterData['P']['extra'];
+    } else {
+        $activeCurrency = CART_PRIMARY_CURRENCY;
+    }
+
+    if (array_key_exists($activeCurrency, $currencies)) {
+        $coefficient = $currencies[$activeCurrency]['coefficient'];
     }
 
     $product_id = $_REQUEST['product_id'];

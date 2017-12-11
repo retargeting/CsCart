@@ -46,13 +46,13 @@
             }
         }
 
+        window.addEventListener("load", function () {
+            document.querySelector("[id^='button_cart_']").addEventListener('click', function () {
+                _ra.addToCart('{$product.product_id}', 1, false);
+            });
+        });
+
         _ra_helper_addLoadEvent(function () {
-            var raCartBtn = document.querySelector("[id^='button_cart_']");
-            if (raCartBtn !== null) {
-                raCartBtn.addEventListener('click', function () {
-                    _ra.addToCart('{$product.product_id}', 1, false);
-                });
-            }
 
             var raWishlist = document.querySelector("[id^='button_wishlist_']");
             if (raWishlist !== null) {
