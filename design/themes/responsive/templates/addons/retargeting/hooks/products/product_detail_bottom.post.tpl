@@ -46,10 +46,8 @@
             }
         }
 
-        window.addEventListener("load", function () {
-            document.querySelector("[id^='button_cart_']").addEventListener('click', function () {
-                _ra.addToCart('{$product.product_id}', 1, false);
-            });
+        $.ceEvent('on', 'ce.formpre_product_form_{$product.product_id}', function(frm, elm) {
+            _ra.addToCart('{$product.product_id}', 1, false);
         });
 
         _ra_helper_addLoadEvent(function () {
