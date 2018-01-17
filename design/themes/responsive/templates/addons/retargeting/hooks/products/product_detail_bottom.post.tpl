@@ -21,6 +21,13 @@
             "name": "{$product.product}",
             "url": window.location.origin + window.location.pathname,
             "img": "{$product.main_pair.detailed.image_path}",
+            {if $ra_fullPrice == $ra_promoPrice or not is_numeric($ra_fullPrice)}
+            "price": {$ra_fullPrice},
+            "promo": "0",
+            {else}
+            "price": {$ra_fullPrice},
+            "promo": {$ra_promoPrice},
+            {/if}
             "price": {$ra_fullPrice},
             "promo": {$ra_promoPrice},
             "brand": false,
