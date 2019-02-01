@@ -1,7 +1,4 @@
 <?php
-
-require('Retargeting_REST_API_Client.php');
-
 use Tygh\Registry;
 use Tygh\Settings;
 
@@ -9,10 +6,16 @@ if (!defined('BOOTSTRAP')) {
     die('Access denied');
 }
 
-function ra_price_calc($price, $coefficient)
-{
-    $total = ($price / $coefficient);
-    return number_format($total, 2, '.', '');
+if(file_exists(dirname(__FILE__ . '/Retargeting_REST_API_Client.php'))) {
+    require(dirname(__FILE__) . '/Retargeting_REST_API_Client.php');
+}
+
+if(!function_exists('ra_price_calc')) {
+    function ra_price_calc($price, $coefficient)
+    {
+        $total = ($price / $coefficient);
+        return number_format($total, 2, '.', '');
+    }
 }
 
 if ($mode == 'complete') {
@@ -62,7 +65,7 @@ if ($mode == 'complete') {
 
     $discountApi = Settings::instance()->getValue('retargeting_discounts_api', 'retargeting');
 
-    if ($discountApi && $discountApi != '') {
+    if ($discountApi && $discountApi != '' && class_exists('Retargeting_REST_API_Client')) {
         $orderClient = new Retargeting_REST_API_Client($discountApi);
         $orderClient->setResponseFormat("json");
         $orderClient->setDecoding(false);
