@@ -8,48 +8,52 @@ if (!defined('BOOTSTRAP')) {
 
 if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
 
-    $currencies = Registry::get('currencies');
+    $currencies  = Registry::get('currencies');
     $coefficient = 1;
 
     $priceFilterData = fn_get_product_filter_fields();
 
-    if (array_key_exists($priceFilterData['P']['extra'], $currencies)) {
+    if (array_key_exists($priceFilterData['P']['extra'], $currencies))
+    {
         $activeCurrency = $priceFilterData['P']['extra'];
-    } else {
+    }
+    else
+    {
         $activeCurrency = CART_PRIMARY_CURRENCY;
     }
 
-    if (array_key_exists($activeCurrency, $currencies)) {
-        $coefficient = $currencies[$activeCurrency]['coefficient'];
+    if (array_key_exists($activeCurrency, $currencies))
+    {
+        $coefficient = (float)$currencies[$activeCurrency]['coefficient'];
     }
 
     $product_id = $_REQUEST['product_id'];
-    if (!empty($product_id)) {
+
+    if (!empty($product_id))
+    {
         $catId = db_get_field('SELECT category_id FROM ?:products_categories WHERE product_id = ?i LIMIT 1', $product_id);
 
-        if ($catId) {
-            Registry::get('view')->assign('catid', $catId);
-        } else {
+        if (!$catId)
+        {
             $catId = 0;
-            Registry::get('view')->assign('catid', $catId);
         }
+
+        Registry::get('view')->assign('catid', $catId);
 
         list($products) = fn_get_products(array('pid' => $product_id));
 
         $product = reset($products);
 
+        $ra_fullPrice  = round($product['list_price'] / $coefficient, 2);
+        $ra_promoPrice = round($product['price'] / $coefficient, 2);
 
-        $ra_fullPrice = number_format($product['list_price'] / $coefficient, 2, ".", "");
-        $ra_promoPrice = number_format($product['price'] / $coefficient, 2, ".", "");
-
-
-        if ($ra_fullPrice <= $ra_promoPrice) {
-            Registry::get('view')->assign('ra_fullPrice', $ra_promoPrice);
-            Registry::get('view')->assign('ra_promoPrice', $ra_fullPrice);
-        } else {
-            Registry::get('view')->assign('ra_fullPrice', $ra_fullPrice);
-            Registry::get('view')->assign('ra_promoPrice', $ra_promoPrice);
+        if ($ra_fullPrice <= 0)
+        {
+            $ra_fullPrice  = $ra_promoPrice;
+            $ra_promoPrice = 0;
         }
 
+        Registry::get('view')->assign('ra_fullPrice', $ra_fullPrice);
+        Registry::get('view')->assign('ra_promoPrice', $ra_promoPrice);
     }
 }
