@@ -1,0 +1,25 @@
+msgid ""
+msgstr "Project-Id-Version: tygh\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: English\n"
+"Language: en_US"
+
+msgctxt "Addons::name::retargeting"
+msgid "Retargeting Tracker and Products feed"
+msgstr "Retargeting Tracker and Products feed"
+
+msgctxt "Addons::description::retargeting"
+msgid "Boost the conversion rate and sales of your online store with Reatergeting intergration."
+msgstr "Boost the conversion rate and sales of your online store with Reatergeting intergration."
+
+msgctxt "Languages::retargeting"
+msgid "Retargeting"
+msgstr "Retargeting"
+
+msgctxt "Languages::retargeting_products"
+msgid "Retargeting products"
+msgstr "Retargeting products"
+
+msgctxt "Languages::cannot_connect_to_server"
+msgid "Cannot connect to the retargeting platform"
+msgstr "Cannot connect to the retargeting platform"

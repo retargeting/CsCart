@@ -4,10 +4,21 @@
     <version>1.2</version>
     <priority>3000</priority>
     <position>300</position>
+	<version>4.4.x-4.9.x</version>
+    <status>active</status>
     <auto_install>MULTIVENDOR,ULTIMATE</auto_install>
-    <name>Retargeting Tracker</name>
-    <description>Retargeting is a marketing automation tool that boosts the conversion rate and sales of your online store.</description>
+    <name>Retargeting Tracker and Products feed</name>
+    <description>Boost the conversion rate and sales of your online store with Reatergeting intergration.</description>
     <priority>20333</priority>
+	<supplier>Retargeting.biz</supplier>
+    <supplier_link>http://www.retargeting.biz</supplier_link>
+    <authors>
+        <author>
+            <name>Retargeting.biz</name>
+            <email>info@retargeting.biz</email>
+            <url>http://www.retargeting.biz</url>
+        </author>
+    </authors>
     <settings edition_type="ROOT,ULT:VENDOR">
         <sections>
             <section id="general">
@@ -79,6 +90,21 @@
                     </item>
                 </items>
             </section>
+            <section id="products_import">
+                <name>Retargeting Products Import</name>
+                <items>
+                    <item id="retargeting_products">
+						<type>template</type>
+						<default_value>retargeting.tpl</default_value>
+					</item>
+                </items>
+            </section>
         </sections>
     </settings>
+    <queries>
+        <item>ALTER TABLE `?:products` ADD `retargeting` CHAR(1) NOT NULL DEFAULT 'Y';</item>
+		<item>ALTER TABLE `?:categories` ADD `retargeting` CHAR(1) NOT NULL DEFAULT 'Y';</item>
+		<item for="uninstall">ALTER TABLE `?:products` DROP `retargeting`;</item>
+		<item for="uninstall">ALTER TABLE `?:categories` DROP `retargeting`;</item>
+	</queries>
 </addon>
