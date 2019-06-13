@@ -44,12 +44,19 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
 
         $product = reset($products);
 
+        fn_promotion_apply('catalog', $product, $_SESSION['auth']);
+
         $ra_fullPrice  = round($product['list_price'] / $coefficient, 2);
         $ra_promoPrice = round($product['price'] / $coefficient, 2);
 
         if ($ra_fullPrice <= 0)
         {
             $ra_fullPrice  = $ra_promoPrice;
+            $ra_promoPrice = 0;
+        }
+
+        if($ra_promoPrice >= $ra_fullPrice)
+        {
             $ra_promoPrice = 0;
         }
 
