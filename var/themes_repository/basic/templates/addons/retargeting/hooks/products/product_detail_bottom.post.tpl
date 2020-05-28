@@ -32,7 +32,7 @@
             }],
             "inventory": {
                 "variations": false,
-                "stock": "{$product_amount = $product.inventory_amount|default:$product.amount}{if ($product_amount <= 0 || $product_amount < $product.min_qty) && $settings.General.inventory_tracking == "Y"}0{else}1{/if}"
+                "stock": {$product_amount = $product.inventory_amount|default:$product.amount}{if ($product_amount <= 0 || $product_amount < $product.min_qty) && $settings.General.inventory_tracking == "Y"}0{else}1{/if}
             }
         };
 
