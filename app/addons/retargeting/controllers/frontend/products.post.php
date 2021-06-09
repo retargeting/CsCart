@@ -68,8 +68,11 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             ]
         ];
 
-        /* if ( floatval(PRODUCT_VERSION) < 4.9 ) {} */
-        $product_details['category'] = [ $product_details['category'] ];
+        /*
+        if ( floatval(PRODUCT_VERSION) < 4.9 ) {
+            $product_details['category'] = [ $product_details['category'] ];
+        }
+        */
         
         
         Registry::get('view')->assign('ra_product_info', json_encode($product_details, JSON_PRETTY_PRINT));
