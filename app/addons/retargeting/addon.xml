@@ -14,7 +14,7 @@
          <max>7.5.0</max>
       </php_version>
       <core_version>
-         <min>4.9.0</min>
+         <min>4.2.0</min>
       </core_version>
    </compatibility>
    <auto_install>MULTIVENDOR,ULTIMATE</auto_install>

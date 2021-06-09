@@ -174,10 +174,12 @@ function fn_regargeting_get_products($items = 250) {
 
 function fn_retargeting_get_price_to_default_currency($price) {
 
-    $defaultCurrency = fn_retargeting_get_addon_variable('retargeting_default_currency');
-
-    return fn_format_price_by_currency($price,CART_SECONDARY_CURRENCY, $defaultCurrency);
-
+    if ( floatval(PRODUCT_VERSION) > 4.9 ) {
+        $defaultCurrency = fn_retargeting_get_addon_variable('retargeting_default_currency');
+        $price = fn_format_price_by_currency($price,CART_SECONDARY_CURRENCY, $defaultCurrency);
+    }
+   
+    return $price;
 }
 
 function fn_retargeting_get_extra_data_product($product) {
