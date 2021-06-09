@@ -13,7 +13,7 @@
 	</script>
 
 	{* CHECKOUT IDS & REMOVE FROM CART *}
-	{if $cart_products && $runtime.controller eq checkout && $runtime.mode eq 'cart'}
+	{if $cart_products && $runtime.controller eq 'checkout' && $runtime.mode eq 'cart'}
 		{$ra_check_ids = []}
 		{foreach $cart_products as $ra_cart_prod}
 			{$ra_check_ids[] = $ra_cart_prod['product_id']}
@@ -48,7 +48,7 @@
 	{/if}
 
 			{* SEND CATEGORIES *}
-	{if $runtime.controller eq categories && $runtime.mode eq 'view'}
+	{if $runtime.controller eq 'categories' && $runtime.mode eq 'view'}
 		<script>
 			var _ra = _ra || {};
 			_ra.sendCategoryInfo = {
@@ -101,7 +101,7 @@
 	</script>
 
 		{*	PRODUCT DETAIL *}
-	{if $runtime.controller eq products && $runtime.mode eq view}
+	{if $runtime.controller eq 'products' && $runtime.mode eq 'view'}
 		<script>
 			function _ra_helper_addLoadEvent(func) {
 				var oldonload = window.onload;
@@ -288,7 +288,7 @@
 	{/if}
 
 		{* SAVE ORDER *}
-	{if $runtime.controller eq checkout && $runtime.mode eq complete}
+	{if $runtime.controller eq 'checkout' && $runtime.mode eq 'complete'}
 		<script type="text/javascript">
 			var _ra = _ra || {};
 
