@@ -13,6 +13,9 @@
          <min>5.6.0</min>
          <max>7.5.0</max>
       </php_version>
+      <core_version>
+         <min>4.2.0</min>
+      </core_version>
    </compatibility>
    <auto_install>MULTIVENDOR,ULTIMATE</auto_install>
    <name>Retargeting Tracker</name>
@@ -86,6 +89,14 @@
                   <type>input</type>
                   <default_value />
                </item>
+
+               <item id="retargeting_default_currency">
+                  <name>Default Currency</name>
+                  <type>selectbox</type>
+                  <default_value>EUR</default_value>
+                  <variants/>
+               </item>
+
             </items>
          </section>
       </sections>
