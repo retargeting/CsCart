@@ -56,12 +56,12 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             'price' => $price,
             'promo' => $promo,
             'brand' => false,
-            'category' => [
+            'category' => [[
                 'id' => $product['main_category'],
                 'name' => fn_get_category_name($product['main_category']),
                 'parent' => false,
                 'breadcrumb' => []
-            ],
+            ]],
             'inventory' => [
                 'variations' => false,
                 "stock" => $product_stock
