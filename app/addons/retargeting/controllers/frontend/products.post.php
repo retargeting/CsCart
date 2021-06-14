@@ -64,7 +64,7 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             ]],
             'inventory' => [
                 'variations' => false,
-                "stock" => $price ? $product_stock : 0,
+                'stock' => $price ? $product_stock : false,
             ]
         ];
 
