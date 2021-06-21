@@ -146,7 +146,7 @@ function fn_regargeting_get_products($items = 250) {
             $price = fn_retargeting_get_price_to_default_currency($price);
             $promo = fn_retargeting_get_price_to_default_currency($promo);
 
-            if($ra_price == 0 || $ra_promo == 0) {
+            if($ra_price == 0 || $ra_promo == 0 || !isset($product['main_pair'])) {
                 continue;
             }
 
@@ -265,7 +265,7 @@ function fn_retargeting_get_category_name($product) {
 }
 
 function fn_retargeting_get_images($product) {
-
+	if (!isset($product['main_pair'])) { return false; }
     $additionalImages = fn_get_image_pairs($product['product_id'], 'product', 'A');
 
     $images = [];
