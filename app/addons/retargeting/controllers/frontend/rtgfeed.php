@@ -13,9 +13,9 @@ if ($mode === 'list') {
     if (version_compare(phpversion(), '7.1', '>=')) {
         ini_set( 'serialize_precision', -1 );
     }
-/*
+
     header("Content-Disposition: attachment; filename=retargeting.csv");
-    header("Content-type: text/csv");    */
+    header("Content-type: text/csv");
 
     $outstream = fopen('php://output', 'w');
 
