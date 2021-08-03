@@ -53,8 +53,8 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             'name' => $product['product'],
             'url' => fn_url('products.view?product_id=' . $product['product_id']),
             'img' => $product['main_pair']['detailed']['image_path'],
-            'price' => $price,
-            'promo' => $promo,
+            'price' => $price ? $price : 1,
+            'promo' => $promo ? $promo : $price ? $price : 1 ,
             'brand' => false,
             'category' => [[
                 'id' => $product['main_category'],
@@ -64,7 +64,7 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             ]],
             'inventory' => [
                 'variations' => false,
-                "stock" => $product_stock
+                'stock' => $price ? $product_stock : false,
             ]
         ];
 
