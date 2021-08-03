@@ -48,13 +48,16 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
         $price = fn_retargeting_get_price_to_default_currency($price);
         $promo = fn_retargeting_get_price_to_default_currency($promo);
 
+        $price = $price ? $price : 99999;
+        $promo = $promo ? $promo : $price ? $price : 99999;
+
         $product_details = [
             "id" => $product['product_id'],
             'name' => $product['product'],
             'url' => fn_url('products.view?product_id=' . $product['product_id']),
             'img' => $product['main_pair']['detailed']['image_path'],
-            'price' => $price ? $price : 0,
-            'promo' => $promo ? $promo : $price ? $price : 0 ,
+            'price' => $price,
+            'promo' => $promo,
             'brand' => false,
             'category' => [[
                 'id' => $product['main_category'],
