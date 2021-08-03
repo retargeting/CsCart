@@ -185,11 +185,12 @@ function fn_retargeting_get_extra_data_product($product, $price, $promo) {
     }
 
     $img = fn_retargeting_get_images($product);
-
+    $img = empty($img) ? [] : $img;
+    $img = empty($img[0]) ? [] : $img;
     $extraData = [];
     $extraData['margin'] = null;
     $extraData['categories'] = implode(' | ', fn_retargeting_get_category_name($product));
-    $extraData['media_gallery'] = empty($img) ? [] : $img;
+    $extraData['media_gallery'] = $img;
     $extraData['in_supplier_stock'] = null;
     $extraData['variations'] = null;
 
