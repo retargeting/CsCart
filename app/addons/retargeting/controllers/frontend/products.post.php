@@ -56,25 +56,18 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             'price' => $price,
             'promo' => $promo,
             'brand' => false,
-            'category' => [[
+            'category' => [
                 'id' => $product['main_category'],
                 'name' => fn_get_category_name($product['main_category']),
                 'parent' => false,
                 'breadcrumb' => []
-            ]],
+            ],
             'inventory' => [
                 'variations' => false,
                 "stock" => $product_stock
             ]
         ];
 
-        /*
-        if ( floatval(PRODUCT_VERSION) < 4.9 ) {
-            $product_details['category'] = [ $product_details['category'] ];
-        }
-        */
-        
-        
         Registry::get('view')->assign('ra_product_info', json_encode($product_details, JSON_PRETTY_PRINT));
         Registry::get('view')->assign('ra_fullPrice', $price);
 
