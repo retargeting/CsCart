@@ -82,8 +82,95 @@ function fn_retargeting_get_addon_variable($variable) {
     }
 
 }
-
 function fn_regargeting_get_products($items = 250) {
+
+    $productsLoop = true;
+    $page = 1;
+
+    while($productsLoop) {
+
+        list($products) = fn_get_products(['page' => $page], $items);
+        fn_gather_additional_products_data($products, [
+            'get_icon'      => true,
+            'get_detailed'  => true,
+            'get_discounts' => false
+        ]);
+        $page++;
+
+        if (empty($products)) {
+            $productsLoop = false;
+            break;
+        }
+
+        foreach ($products as $key => $product) {
+
+            $currencies  = Registry::get('currencies');
+            $coefficient = 1;
+
+            $priceFilterData = fn_get_product_filter_fields();
+
+            if (array_key_exists($priceFilterData['P']['extra'], $currencies)) {
+                $activeCurrency = $priceFilterData['P']['extra'];
+            } else {
+                $activeCurrency = CART_PRIMARY_CURRENCY;
+            }
+
+            if (array_key_exists($activeCurrency, $currencies)) {
+                $coefficient = (float)$currencies[$activeCurrency]['coefficient'];
+            }
+
+
+            $catId = db_get_field('SELECT category_id FROM ?:products_categories WHERE product_id = ?i LIMIT 1', $product['product_id']);
+
+            if (!$catId) { $catId = 0; }
+
+            $category_name = fn_get_category_name(
+                $catId,
+                CART_LANGUAGE,
+                false
+            );
+
+            fn_promotion_apply('catalog', $product, $_SESSION['auth']);
+
+            $price = fn_format_price($product['price']);
+            $list_price = fn_format_price($product['list_price']);
+            $base_price = fn_format_price($product['base_price']);
+
+            $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
+
+            $ra_promo = $price;
+
+            $price = round($ra_price / $coefficient, 2);
+            $promo = round($ra_promo / $coefficient,2);
+            $price = fn_retargeting_get_price_to_default_currency($price);
+            $promo = fn_retargeting_get_price_to_default_currency($promo);
+
+            if($ra_price == 0 || $ra_promo == 0) {
+                continue;
+            }
+
+
+            yield [     'product id' => $product['product_id'],
+                        'product name' => fn_get_product_name($product['product_id'], CART_LANGUAGE, false),
+                        'product url' => fn_url('products.view?product_id=' . $product['product_id']),
+                        'image url' => $product['main_pair']['detailed']['image_path'],
+                        'stock' => fn_get_product_amount($product['product_id']),
+                        'price' => $price, //round($product['list_price'] / $coefficient, 2)
+                        'sale price' => $promo,
+                        'brand' => '',
+                        'category' => $category_name,
+                        'extra data' => json_encode([
+                                'currency' => $activeCurrency,
+                                'language' => CART_LANGUAGE
+                            ] + fn_retargeting_get_extra_data_product($product))
+                ];
+
+        }
+
+    }
+
+}
+function fn_regargeting_get_products_old($items = 250) {
 
     $productsLoop = true;
     $page = 1;
