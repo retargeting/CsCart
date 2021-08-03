@@ -143,10 +143,12 @@ function fn_regargeting_get_products($items = 250) {
 
             $price = round($ra_price / $coefficient, 2);
             $promo = round($ra_promo / $coefficient,2);
+
             $price = fn_retargeting_get_price_to_default_currency($price);
             $promo = fn_retargeting_get_price_to_default_currency($promo);
 
-            if($ra_price == 0 || $ra_promo == 0) {
+            if($ra_price == 0 || $ra_promo == 0 ||
+                !isset($product['main_pair']) || $product['main_pair']['detailed']['image_path'] ==="") {
                 continue;
             }
 
