@@ -43,7 +43,7 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
 
 
         $price = round($ra_price / $coefficient, 2);
-        $promo = round($ra_promo / $coefficient,2);
+        $promo = round($ra_promo / $coefficient, 2);
 
         $price = fn_retargeting_get_price_to_default_currency($price);
         $promo = fn_retargeting_get_price_to_default_currency($promo);
@@ -53,8 +53,8 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             'name' => $product['product'],
             'url' => fn_url('products.view?product_id=' . $product['product_id']),
             'img' => $product['main_pair']['detailed']['image_path'],
-            'price' => $price,
-            'promo' => $promo,
+            'price' => $price ? $price : 0,
+            'promo' => $promo ? $promo : $price ? $price : 0 ,
             'brand' => false,
             'category' => [[
                 'id' => $product['main_category'],
@@ -64,7 +64,7 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             ]],
             'inventory' => [
                 'variations' => false,
-                "stock" => $product_stock
+                'stock' => $price ? $product_stock : false,
             ]
         ];
 

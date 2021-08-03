@@ -145,7 +145,7 @@ function fn_regargeting_get_products($items = 250) {
             $price = fn_retargeting_get_price_to_default_currency($price);
             $promo = fn_retargeting_get_price_to_default_currency($promo);
 
-            if($ra_price == 0 || $ra_promo == 0) {
+            if($ra_price == 0 || $ra_promo == 0 || !isset($product['main_pair']) || $product['main_pair']['detailed']['image_path'] ==="") {
                 continue;
             }
 
@@ -352,17 +352,16 @@ function fn_retargeting_get_category_name($product) {
 }
 
 function fn_retargeting_get_images($product) {
-
+    if (!isset($product['main_pair']) || $product['main_pair']['detailed']['image_path'] ==="" ){
+        return false;
+    }
     $additionalImages = fn_get_image_pairs($product['product_id'], 'product', 'A');
 
     $images = [];
     $images[] = $product['main_pair']['detailed']['https_image_path'];
     foreach ($additionalImages as $image) {
-
         $images[] = $image['detailed']['https_image_path'];
-
     }
 
     return $images;
-
 }
