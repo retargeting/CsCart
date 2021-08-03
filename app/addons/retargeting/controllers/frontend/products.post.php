@@ -43,13 +43,10 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
 
 
         $price = round($ra_price / $coefficient, 2);
-        $promo = round($ra_promo / $coefficient, 2);
+        $promo = round($ra_promo / $coefficient,2);
 
         $price = fn_retargeting_get_price_to_default_currency($price);
         $promo = fn_retargeting_get_price_to_default_currency($promo);
-
-        $price = $price ? $price : 99999;
-        $promo = $promo ? $promo : $price ? $price : 99999;
 
         $product_details = [
             "id" => $product['product_id'],
@@ -67,7 +64,7 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
             ]],
             'inventory' => [
                 'variations' => false,
-                'stock' => $price ? $product_stock : false,
+                "stock" => $product_stock
             ]
         ];
 

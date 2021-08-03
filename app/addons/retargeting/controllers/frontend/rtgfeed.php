@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
 
 use Tygh\Registry;
 
@@ -12,9 +13,9 @@ if ($mode === 'list') {
     if (version_compare(phpversion(), '7.1', '>=')) {
         ini_set( 'serialize_precision', -1 );
     }
-
+/*
     header("Content-Disposition: attachment; filename=retargeting.csv");
-    header("Content-type: text/csv");
+    header("Content-type: text/csv");    */
 
     $outstream = fopen('php://output', 'w');
 
@@ -32,11 +33,9 @@ if ($mode === 'list') {
     ), ',', '"');
 
     foreach(fn_regargeting_get_products() as $product) {
-
         fputcsv($outstream, $product, ',', '"');
-
     }
-
+    
     fclose($outstream);
     exit();
 }
