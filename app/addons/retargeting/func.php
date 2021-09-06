@@ -211,8 +211,8 @@ function fn_retargeting_get_extra_data_product($product, $price, $promo) {
         $extraData['variations'][] = [
             'code' => $variation['variant_id'],
             'price' => $price + $variation['modifier'],
-            'sale price' => $promo + $variation['modifier'],
-            'stock' => true,
+            'sale_price' => $promo + $variation['modifier'],
+            'stock' => 1,
             'margin' => null,
             'in_supplier_stock' => null
         ];
