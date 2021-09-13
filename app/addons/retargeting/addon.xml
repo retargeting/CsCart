@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon scheme="3.0" edition_type="ROOT,ULT:VENDOR">
    <id>retargeting</id>
-   <version>1.2</version>
+   <version>1.3</version>
    <default_language>en</default_language>
    <priority>100</priority>
    <position>300</position>
