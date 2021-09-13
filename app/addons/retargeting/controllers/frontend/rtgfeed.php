@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
 
 use Tygh\Registry;
 
@@ -32,11 +33,9 @@ if ($mode === 'list') {
     ), ',', '"');
 
     foreach(fn_regargeting_get_products() as $product) {
-
         fputcsv($outstream, $product, ',', '"');
-
     }
-
+    
     fclose($outstream);
     exit();
 }

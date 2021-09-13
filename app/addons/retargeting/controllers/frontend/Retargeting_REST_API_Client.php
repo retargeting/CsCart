@@ -163,8 +163,7 @@ class Retargeting_REST_API_Client
             }
         }
 
-        return curl_exec($curl_request);
-        */
+        return curl_exec($curl_request);*/
         return true;
     }
 

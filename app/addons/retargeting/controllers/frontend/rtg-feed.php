@@ -1,42 +1,315 @@
 <?php
 
-use Tygh\Registry;
+/**
+ * Require composer autoload
+ */
+require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 
-if (!defined('BOOTSTRAP')) { die('Access denied'); }
+/**
+ * Class RTGFeeds
+ */
+class RTGFeeds
+{
+    /**
+     * @var int
+     */
+    protected $currentPage = 1;
 
-$lang_code = CART_LANGUAGE;
+    /**
+     * @var int
+     */
+    protected $lastPage = 1;
 
-if ($mode === 'list') {
+    /**
+     * @var int
+     */
+    protected $perPage = 10;
 
-    // json encode - float precision
-    if (version_compare(phpversion(), '7.1', '>=')) {
-        ini_set( 'serialize_precision', -1 );
+    /**
+     * @var int
+     */
+    protected $totalRows = 0;
+
+    /**
+     * @var null
+     */
+    protected $token = null;
+
+    /**
+     * @var \RetargetingSDK\CustomersFeed|\RetargetingSDK\ProductFeed
+     */
+    protected $feed;
+
+    /**
+     * RTGFeeds constructor.
+     */
+    public function __construct()
+    {
+        $this->validateReqParams();
     }
 
-    header("Content-Disposition: attachment; filename=retargeting.csv");
-    header("Content-type: text/csv");
+    /**
+     * Get customers feed
+     *
+     * @throws Exception
+     */
+    public function getCustomers()
+    {
+        if(!empty($this->token))
+        {
+            list($customers, $params) = fn_get_users([ 'page' => $this->currentPage ], $_SESSION['auth'], $this->perPage);
 
-    $outstream = fopen('php://output', 'w');
+            $this->feed = new \RetargetingSDK\CustomersFeed($this->token);
 
-    fputcsv($outstream, array(
-        'product id',
-        'product name',
-        'product url',
-        'image url',
-        'stock',
-        'price',
-        'sale price',
-        'brand',
-        'category',
-        'extra data'
-    ), ',', '"');
+            foreach ($customers AS $customer)
+            {
+                $RTGCustomer = new \RetargetingSDK\Customer();
+                $RTGCustomer->setFirstName($customer['firstname']);
+                $RTGCustomer->setLastName($customer['lastname']);
+                $RTGCustomer->setEmail($customer['email']);
+                $RTGCustomer->setStatus($customer['status'] == 'A');
+                $RTGCustomer->setPhone($customer['phone']);
 
-    foreach(fn_regargeting_get_products() as $product) {
+                $this->feed->addCustomer($RTGCustomer->getData(true));
+            }
 
-        fputcsv($outstream, $product, ',', '"');
-
+            $this->output('customers', $params['total_items']);
+        }
+        else
+        {
+            echo 'Token arg is missing or is empty!';
+        }
     }
 
-    fclose($outstream);
-    exit();
+    /**
+     * Get products feed
+     *
+     * @throws Exception
+     */
+    public function getProducts()
+    {
+        list($products, $params) = fn_get_products([ 'page' => $this->currentPage ], $this->perPage);
+
+        fn_gather_additional_products_data($products, [
+            'get_icon'      => true,
+            'get_detailed'  => true,
+            'get_discounts' => false
+        ]);
+
+        $this->feed = new \RetargetingSDK\ProductFeed();
+
+        foreach ($products AS $product)
+        {
+            $RTGProduct = new \RetargetingSDK\Product();
+            $RTGProduct->setId($product['product_id']);
+            $RTGProduct->setName($product['product']);
+            $RTGProduct->setUrl(fn_url('products.view?product_id=' . $product['product_id']));
+
+            // Price
+            $regularPrice  = (float)$product['list_price'];
+            $salePrice     = (float)$product['price'];
+
+            if ($regularPrice <= 0)
+            {
+                $regularPrice = $salePrice;
+            }
+            else
+            {
+                $RTGProduct->setPromo($salePrice);
+            }
+
+            $RTGProduct->setPrice($regularPrice);
+
+            // Images
+            if (!empty($product['main_pair']['detailed']['image_path']))
+            {
+                $RTGProduct->setImg($product['main_pair']['detailed']['image_path']);
+            }
+
+            $additionalImages = [];
+
+            if (!empty($product['product_options']))
+            {
+                foreach ($product['product_options'] AS $productOption)
+                {
+                    if (!empty($productOption['variants']))
+                    {
+                        foreach ($productOption['variants'] AS $variant)
+                        {
+                            if (!empty($variant['image_pair']['icon']['image_path']))
+                            {
+                                $additionalImages[] = $variant['image_pair']['icon']['image_path'];
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!empty($additionalImages))
+            {
+                $RTGProduct->setAdditionalImages($additionalImages);
+            }
+
+            // Category
+            if (!empty($product['main_category']))
+            {
+                $categories = fn_get_categories_list_with_parents([ $product['main_category'] ]);
+
+                if (!empty($categories[$product['main_category']]))
+                {
+                    $category = $categories[$product['main_category']];
+
+                    $RTGCategory = new \RetargetingSDK\Category();
+                    $RTGCategory->setId($category['category_id']);
+                    $RTGCategory->setName($category['category']);
+
+                    if (!empty($category['parent_id']))
+                    {
+                        $RTGCategory->setParent($category['parent_id']);
+
+                        if (!empty($category['parents']))
+                        {
+                            $RTGCategory->setBreadcrumb(
+                                $this->getCategoryBreadcrumbs($category['parents'])
+                            );
+                        }
+                    }
+
+                    $RTGProduct->setCategory([ $RTGCategory->getData(false) ]);
+                }
+            }
+
+            // Inventory
+            $RTGProduct->setInventory([
+                'variations' => false,
+                'stock'      => $product['amount'] > 0
+            ]);
+
+            $this->feed->addProduct($RTGProduct->getData(false));
+        }
+
+        $this->output('products', $params['total_items']);
+    }
+
+    /**
+     * Output results
+     *
+     * @param $type
+     * @param $totalItems
+     */
+    protected function output($type, $totalItems)
+    {
+        // Feed URL
+        $feedURL = fn_url('rtg-feed.' . $type . '&per_page=' . $this->perPage, 'C');
+
+        // Last page
+        $this->lastPage = $totalItems > 0 ? ceil($totalItems / $this->perPage) : 1;
+
+        // Previous page
+        $prevPage = $this->currentPage - 1;
+
+        if($prevPage < 1)
+        {
+            $prevPage = $this->currentPage;
+        }
+
+        // Next page
+        $nextPage = $this->currentPage + 1;
+
+        if($nextPage > $this->lastPage)
+        {
+            $nextPage = $this->lastPage;
+        }
+
+        $this->feed->setCurrentPage($this->currentPage);
+        $this->feed->setPrevPage($feedURL . '&page=' . $prevPage);
+        $this->feed->setNextPage($feedURL . '&page=' . $nextPage);
+        $this->feed->setLastPage($this->lastPage);
+
+        echo $this->feed->getData();
+    }
+
+    /**
+     * Validate request params
+     */
+    private function validateReqParams()
+    {
+        // Current page
+        $currentPage = !empty($_GET['page']) ? (int)$_GET['page'] : 0;
+
+        if($currentPage > 0)
+        {
+            $this->currentPage = $currentPage;
+        }
+
+        // Per page
+        $perPage = !empty($_GET['per_page']) ? (int)$_GET['per_page'] : 0;
+
+        if($perPage > 0 && $perPage <= 500)
+        {
+            $this->perPage = $perPage;
+        }
+
+        // Token
+        $token = !empty($_GET['token']) ? $_GET['token'] : null;
+
+        if(!empty($token))
+        {
+            $this->token = $token;
+        }
+    }
+
+    /**
+     * @param $categories
+     * @return array
+     */
+    private function getCategoryBreadcrumbs($categories)
+    {
+        $breadcrumbs = [];
+
+        foreach ($categories AS $category)
+        {
+            if (!empty($category['parents']))
+            {
+                $breadcrumbs = array_merge($breadcrumbs, $this->getCategoryBreadcrumbs($category['parents']));
+            }
+
+            $breadcrumbs[] = [
+                'id'     => $category['category_id'],
+                'name'   => $category['category'],
+                'parent' => !empty($category['parent_id']) ? $category['parent_id'] : false
+            ];
+        }
+
+        return $breadcrumbs;
+    }
 }
+
+/**
+ * Initialise feed
+ */
+$RTGFeeds = new RTGFeeds();
+
+try
+{
+    switch ($mode)
+    {
+        case 'customers':
+            $RTGFeeds->getCustomers();
+            break;
+
+        case 'products':
+            $RTGFeeds->getProducts();
+            break;
+
+        default:
+            echo 'Mode arg has wrong value!';
+            break;
+    }
+}
+catch (Exception $exception)
+{
+    echo '<pre>'; print_r($exception->getTraceAsString()); echo '</pre>';
+}
+
+exit(0);
