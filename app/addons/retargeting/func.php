@@ -101,37 +101,9 @@ function fn_regargeting_get_products() {
             false
         );
 
-
         fn_promotion_apply('catalog', $product, $_SESSION['auth']);
 
-        /*$price = fn_format_price($product['price']);
-        $list_price = fn_format_price($product['list_price']);
-        $base_price = fn_format_price($product['base_price']);
-
-        $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
-
-        $ra_promo = $price;
-
-        $price = round($ra_price / $coefficient, 2);
-        $promo = round($ra_promo / $coefficient,2);
-
-        $price = fn_retargeting_get_price_to_default_currency($price);
-        $promo = fn_retargeting_get_price_to_default_currency($promo);
-
-
-        $regularPrice  = (float)$product['list_price'];
-        $salePrice     = (float)$product['price'];
-
-        if ($regularPrice <= 0)
-        {
-            $regularPrice = $salePrice;
-        }
-
-        $price = round($regularPrice, 2);
-        $promo = round($salePrice, 2);
-*/
         $coefficient = fn_retargeting_get_coefficient();
-
 
         $price = fn_format_price($product['price']);
         $list_price = fn_format_price($product['list_price']);
