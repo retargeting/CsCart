@@ -83,61 +83,73 @@ function fn_retargeting_get_addon_variable($variable) {
 
 }
 
-function fn_regargeting_get_products() {
+function fn_regargeting_get_products($items = 250) {
 
+    $productsLoop = true;
+    $page = 1;
     $newList = [];
-    list($products) = fn_get_products();
-    fn_gather_additional_products_data($products, [
-        'get_icon'      => true,
-        'get_detailed'  => true,
-        'get_discounts' => false
-    ]);
 
-    foreach ($products as $key => $product) {
+    while($productsLoop) {
 
-        $category_name = fn_get_category_name(
-            $product['main_category'],
-            CART_LANGUAGE,
-            false
-        );
+        list($products) = fn_get_products(['page' => $page], $items);
 
-        fn_promotion_apply('catalog', $product, $_SESSION['auth']);
+        fn_gather_additional_products_data($products, [
+            'get_icon'      => true,
+            'get_detailed'  => true,
+            'get_discounts' => false
+        ]);
+        $page++;
 
-        $coefficient = fn_retargeting_get_coefficient();
-
-        $price = fn_format_price($product['price']);
-        $list_price = fn_format_price($product['list_price']);
-        $base_price = fn_format_price($product['base_price']);
-
-        $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
-
-        $ra_promo = $price;
-
-        $price = round($ra_price / $coefficient, 2);
-        $promo = round($ra_promo / $coefficient, 2);
-
-        if($price == 0 || $promo == 0 ||
-            !isset($product['main_pair']) ||
-            $product['main_pair']['detailed']['image_path'] === "") {
-            continue;
+        if (empty($products)) {
+            $productsLoop = false;
+            break;
         }
-        /*
-        $price = fn_retargeting_get_price_to_default_currency($price);
-        $promo = fn_retargeting_get_price_to_default_currency($promo);
-*/
-        $newList[] = [
-            'product id' => $product['product_id'],
-            'product name' => $product['product'],
-            'product url' => fn_url('products.view?product_id=' . $product['product_id']),
-            'image url' => $product['main_pair']['detailed']['image_path'],
-            'stock' => $product['amount'],
-            'price' => $price, //round($product['list_price'] / $coefficient, 2)
-            'sale price' => $promo,
-            'brand' => '',
-            'category' => $category_name,
-            'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
-        ];
 
+        foreach ($products as $key => $product) {
+
+            $category_name = fn_get_category_name(
+                $product['main_category'],
+                CART_LANGUAGE,
+                false
+            );
+
+            fn_promotion_apply('catalog', $product, $_SESSION['auth']);
+
+            $coefficient = fn_retargeting_get_coefficient();
+
+            $price = fn_format_price($product['price']);
+            $list_price = fn_format_price($product['list_price']);
+            $base_price = fn_format_price($product['base_price']);
+
+            $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
+
+            $ra_promo = $price;
+
+            $price = round($ra_price / $coefficient, 2);
+            $promo = round($ra_promo / $coefficient, 2);
+
+            if($price == 0 || $promo == 0 ||
+                !isset($product['main_pair']) ||
+                $product['main_pair']['detailed']['image_path'] === "") {
+                continue;
+            }
+    /*
+            $price = fn_retargeting_get_price_to_default_currency($price);
+            $promo = fn_retargeting_get_price_to_default_currency($promo);
+    */
+            $newList[] = [
+                'product id' => $product['product_id'],
+                'product name' => $product['product'],
+                'product url' => fn_url('products.view?product_id=' . $product['product_id']),
+                'image url' => $product['main_pair']['detailed']['image_path'],
+                'stock' => $product['amount'],
+                'price' => $price, //round($product['list_price'] / $coefficient, 2)
+                'sale price' => $promo,
+                'brand' => '',
+                'category' => $category_name,
+                'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
+            ];
+        }
     }
     return $newList;
 }
