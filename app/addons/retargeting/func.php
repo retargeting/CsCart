@@ -182,25 +182,26 @@ function fn_retargeting_get_extra_data_product($product, $price, $promo) {
     foreach(fn_retargeting_get_category_name($product) as $k=>$v){
         $extraData['categories'][$k] = $v;
     }
-    $variations = [];
+    $variations = null;
     foreach($product['product_options'] as $key => $option) {
         if (isset($option['variants'])) {
             $variations = $option['variants'];
             break;
         }
     }
+    if ($variations !== null) {
+        foreach ($variations as $key => $variation) {
 
-    foreach ($variations as $key => $variation) {
+            $extraData['variations'][] = [
+                'code' => $variation['variant_id'],
+                'price' => $price + $variation['modifier'],
+                'sale_price' => $promo + $variation['modifier'],
+                'stock' => 1,
+                'margin' => null,
+                'in_supplier_stock' => null
+            ];
 
-        $extraData['variations'][] = [
-            'code' => $variation['variant_id'],
-            'price' => $price + $variation['modifier'],
-            'sale_price' => $promo + $variation['modifier'],
-            'stock' => 1,
-            'margin' => null,
-            'in_supplier_stock' => null
-        ];
-
+        }
     }
 
     return $extraData;
