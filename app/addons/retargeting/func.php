@@ -182,7 +182,7 @@ function fn_retargeting_get_extra_data_product($product, $price, $promo) {
     foreach(fn_retargeting_get_category_name($product) as $k=>$v){
         $extraData['categories'][$k] = $v;
     }
-    
+    $variations = [];
     foreach($product['product_options'] as $key => $option) {
         if (isset($option['variants'])) {
             $variations = $option['variants'];
