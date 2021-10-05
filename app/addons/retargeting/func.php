@@ -130,7 +130,8 @@ function fn_regargeting_get_products($items = 250) {
 
             if($price == 0 || $promo == 0 ||
                 !isset($product['main_pair']) ||
-                $product['main_pair']['detailed']['image_path'] === "") {
+                empty($product['main_pair']['detailed']['image_path']) ||
+                !filter_var($product['main_pair']['detailed']['image_path'], FILTER_VALIDATE_URL)) {
                 continue;
             }
     /*
