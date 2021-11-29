@@ -15,7 +15,7 @@ if ($mode === 'list') {
     }
 
     header("Content-Disposition: attachment; filename=retargeting.csv");
-    header("Content-type: text/csv");
+    header("Content-type: text/csv; charset=utf-8");
 
     $outstream = fopen('php://output', 'w');
 
