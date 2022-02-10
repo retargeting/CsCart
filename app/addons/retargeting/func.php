@@ -133,6 +133,8 @@ function fn_regargeting_get_products($items = 250) {
                 empty($product['main_pair']['detailed']['image_path'])) {
                 continue;
             }
+            
+            $product['amount'] = $product['amount'] > 0 ? $product['amount'] : 0;
     /*
             $price = fn_retargeting_get_price_to_default_currency($price);
             $promo = fn_retargeting_get_price_to_default_currency($promo);
