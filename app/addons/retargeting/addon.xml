@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon scheme="3.0" edition_type="ROOT,ULT:VENDOR">
    <id>retargeting</id>
-   <version>1.5</version>
+   <version>1.9</version>
    <default_language>en</default_language>
    <priority>100</priority>
    <position>300</position>
@@ -88,6 +88,11 @@
                   <name>Product Old Price</name>
                   <type>input</type>
                   <default_value />
+               </item>
+               <item id="retargeting_default_stock">
+                  <name>Default Stock</name>
+                  <type>selectbox</type>
+                  <default_value>0</default_value>
                </item>
 
                <item id="retargeting_default_currency">

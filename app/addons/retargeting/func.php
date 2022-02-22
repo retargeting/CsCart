@@ -70,7 +70,12 @@ function fn_settings_variants_addons_retargeting_retargeting_default_currency() 
 
     return $currenciesArray;
 }
-
+function fn_settings_variants_addons_retargeting_retargeting_default_stock() {
+    return [
+        '1'=>'In Stock',
+        '0'=>'Out of Stock'
+    ];
+}
 function fn_retargeting_get_addon_variable($variable) {
 
     $addon = Registry::get('addons.retargeting');
@@ -133,8 +138,10 @@ function fn_regargeting_get_products($items = 250) {
                 empty($product['main_pair']['detailed']['image_path'])) {
                 continue;
             }
+
             
-            $product['amount'] = $product['amount'] > 0 ? $product['amount'] : 0;
+            $product['amount'] = $product['amount'] > 0 ?
+                $product['amount'] : fn_retargeting_get_addon_variable('retargeting_default_stock');
     /*
             $price = fn_retargeting_get_price_to_default_currency($price);
             $promo = fn_retargeting_get_price_to_default_currency($promo);
