@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon scheme="3.0" edition_type="ROOT,ULT:VENDOR">
+   <id>retargeting</id>
+   <version>2.0</version>
+   <default_language>en</default_language>
+   <priority>100</priority>
+   <position>300</position>
+   <status>active</status>
+   <supplier>Retargeting.biz</supplier>
+   <supplier_link>https://retargeting.biz</supplier_link>
+   <has_icon>Y</has_icon>
+   <compatibility>
+      <php_version>
+         <min>5.6.0</min>
+         <max>7.5.0</max>
+      </php_version>
+      <core_version>
+         <min>4.2.0</min>
+      </core_version>
+   </compatibility>
+   <auto_install>MULTIVENDOR,ULTIMATE</auto_install>
+   <name>Retargeting Tracker</name>
+   <description>Retargeting is a marketing automation tool that boosts the conversion rate and sales of your online store.</description>
+   <settings layout="separate" edition_type="ROOT,ULT:VENDOR">
+      <sections>
+         <section id="general">
+            <name>Retargeting Tracker Basic Settings</name>
+            <items>
+               <item id="header">
+                  <type>header</type>
+                  <name>Retargeting Tracking Code</name>
+               </item>
+               <item id="retargeting_domain_api">
+                  <name>Tracking API Key</name>
+                  <type>input</type>
+               </item>
+               <item id="retargeting_discounts_api">
+                  <name>REST API Key</name>
+                  <type>input</type>
+               </item>
+               <item id="help_pages">
+                  <name>Help Pages</name>
+                  <type>input</type>
+               </item>
+               <item id="cart_url">
+                  <name>Cart URL</name>
+                  <type>input</type>
+               </item>
+            </items>
+         </section>
+         <section id="configuration">
+            <name>Retargeting Tracker Options</name>
+            <items>
+               <item id="header">
+                  <type>header</type>
+                  <name>JavaScript Query Selectors [Experimental]</name>
+               </item>
+               <item id="retargeting_qs_addToCart">
+                  <name>Add To Cart Button</name>
+                  <type>input</type>
+                  <default_value>[id^="button_cart_"]</default_value>
+               </item>
+               <item id="retargeting_qs_variation">
+                  <name>Product Variants Buttons</name>
+                  <type>input</type>
+                  <default_value>[id^='option_']</default_value>
+               </item>
+               <item id="retargeting_qs_addToWishlist">
+                  <name>Add To Wishlist Button</name>
+                  <type>input</type>
+                  <default_value>[id^="button_wishlist_"]</default_value>
+               </item>
+               <item id="retargeting_qs_productImages">
+                  <name>Product Images</name>
+                  <type>input</type>
+                  <default_value>.ty-previewer</default_value>
+               </item>
+               <item id="retargeting_qs_review">
+                  <name>Submit Review Button</name>
+                  <type>input</type>
+                  <default_value />
+               </item>
+               <item id="retargeting_qs_price">
+                  <name>Product Price</name>
+                  <type>input</type>
+                  <default_value />
+               </item>
+               <item id="retargeting_qs_oldPrice">
+                  <name>Product Old Price</name>
+                  <type>input</type>
+                  <default_value />
+               </item>
+               <item id="retargeting_default_stock">
+                  <name>Default Stock</name>
+                  <type>selectbox</type>
+                  <default_value>0</default_value>
+               </item>
+
+               <item id="retargeting_default_currency">
+                  <name>Default Currency</name>
+                  <type>selectbox</type>
+                  <default_value>EUR</default_value>
+                  <variants/>
+               </item>
+
+            </items>
+         </section>
+      </sections>
+   </settings>
+</addon>
