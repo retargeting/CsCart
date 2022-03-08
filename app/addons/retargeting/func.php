@@ -6,6 +6,10 @@ use Tygh\Settings;
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
+function fn_dir()
+{
+	return __DIR__;
+}
 
 // Get main cat
 function fn_retargeting_get_main_category($product_id, $lang_code = DESCR_SL)
@@ -161,6 +165,86 @@ function fn_regargeting_get_products($items = 250) {
         }
     }
     return $newList;
+}
+
+function fn_regargeting_get_prod($extra = null) {
+    if ($extra === null) {
+        $extra = [ 'getProducts' => true, 'page' => 1, 'limit' => 250 ];
+    }
+
+    list($products) = fn_get_products([
+        'page' => $extra['page']
+        //,
+        // 'sort_by' => 'product_id',
+        // 'sort_order'=>'desc'
+    ], $extra['limit']);
+
+    fn_gather_additional_products_data($products, [
+        'get_icon'      => true,
+        'get_detailed'  => true,
+        'get_discounts' => false
+    ]);
+
+    $extra['page']++;
+    $extra['list'] = [];
+
+    if (empty($products)) {
+        $extra['getProducts'] = false;
+
+        return $extra;
+    }
+
+    foreach ($products as $key => $product) {
+
+        $category_name = fn_get_category_name(
+            $product['main_category'],
+            CART_LANGUAGE,
+            false
+        );
+
+        fn_promotion_apply('catalog', $product, $_SESSION['auth']);
+
+        $coefficient = fn_retargeting_get_coefficient();
+
+        $price = fn_format_price($product['price']);
+        $list_price = fn_format_price($product['list_price']);
+        $base_price = fn_format_price($product['base_price']);
+
+        $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
+
+        $ra_promo = $price;
+
+        $price = round($ra_price / $coefficient, 2);
+        $promo = round($ra_promo / $coefficient, 2);
+
+        if($price == 0 || $promo == 0 ||
+            !isset($product['main_pair']) ||
+            empty($product['main_pair']['detailed']['image_path'])) {
+            continue;
+        }
+
+        
+        $product['amount'] = $product['amount'] > 0 ?
+            $product['amount'] : fn_retargeting_get_addon_variable('retargeting_default_stock');
+/*
+        $price = fn_retargeting_get_price_to_default_currency($price);
+        $promo = fn_retargeting_get_price_to_default_currency($promo);
+*/
+        $extra['list'][] = [
+            'product id' => $product['product_id'],
+            'product name' => $product['product'],
+            'product url' => fn_url('products.view?product_id=' . $product['product_id']),
+            'image url' => $product['main_pair']['detailed']['image_path'],
+            'stock' => $product['amount'],
+            'price' => $price, //round($product['list_price'] / $coefficient, 2)
+            'sale price' => $promo,
+            'brand' => '',
+            'category' => $category_name,
+            'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
+        ];
+    }
+    
+    return $extra;
 }
 
 function fn_retargeting_get_price_to_default_currency($price) {
