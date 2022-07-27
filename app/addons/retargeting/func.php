@@ -80,6 +80,13 @@ function fn_settings_variants_addons_retargeting_retargeting_default_stock() {
         '0'=>'Out of Stock'
     ];
 }
+
+function fn_settings_variants_addons_retargeting_with_vat() {
+    return [
+        '1'=>'Yes',
+        '0'=>'No'
+    ];
+}
 /*
 function fn_settings_variants_addons_retargeting_retargeting_cron_feed() {
     return [
@@ -137,6 +144,14 @@ function fn_regargeting_get_products($items = 250) {
             $price = fn_format_price($product['price']);
             $list_price = fn_format_price($product['list_price']);
             $base_price = fn_format_price($product['base_price']);
+
+            $vat = 24;
+
+            if (fn_retargeting_get_addon_variable('with_vat') == 1) {
+                $price = $price + $price * $vat / 100;
+                $list_price = $list_price + $list_price * $vat / 100;
+                $base_price = $base_price + $base_price * $vat / 100;
+            }
 
             $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
 
@@ -217,6 +232,14 @@ function fn_regargeting_get_prod($extra = null) {
         $price = fn_format_price($product['price']);
         $list_price = fn_format_price($product['list_price']);
         $base_price = fn_format_price($product['base_price']);
+
+        $vat = 24;
+
+            if (fn_retargeting_get_addon_variable('with_vat') == 1) {
+                $price = $price + $price * $vat / 100;
+                $list_price = $list_price + $list_price * $vat / 100;
+                $base_price = $base_price + $base_price * $vat / 100;
+            }
 
         $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
 
