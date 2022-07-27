@@ -37,6 +37,14 @@ if ($mode == 'view' && !empty($_REQUEST['product_id'])) {
         $list_price = fn_format_price($product['list_price']);
         $base_price = fn_format_price($product['base_price']);
 
+        $vat = 24;
+
+            if (fn_retargeting_get_addon_variable('with_vat') == 1) {
+                $price = $price + $price * $vat / 100;
+                $list_price = $list_price + $list_price * $vat / 100;
+                $base_price = $base_price + $base_price* $vat / 100;
+            }
+
         $ra_price = fn_retargeting_get_price($base_price, $price, $list_price);
 
         $ra_promo = $price;

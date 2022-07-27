@@ -46,6 +46,10 @@
                   <name>Cart URL</name>
                   <type>input</type>
                </item>
+               <item id="with_vat">
+                  <name>Add 24% VAT to prices</name>
+                  <type>selectbox</type>
+               </item>
             </items>
          </section>
          <section id="configuration">
