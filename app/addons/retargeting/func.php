@@ -166,6 +166,8 @@ function fn_regargeting_get_products($items = 250) {
                 continue;
             }
 
+            $productImage = (!empty($product['main_pair']['detailed']['image_path'])) ? $product['main_pair']['detailed']['image_path'] : '';
+
             
             $product['amount'] = $product['amount'] > 0 ?
                 $product['amount'] : fn_retargeting_get_addon_variable('retargeting_default_stock');
@@ -177,7 +179,7 @@ function fn_regargeting_get_products($items = 250) {
                 'product id' => $product['product_id'],
                 'product name' => $product['product'],
                 'product url' => fn_url('products.view?product_id=' . $product['product_id']),
-                'image url' => $product['main_pair']['detailed']['image_path'],
+                'image url' => fixUrl($productImage),
                 'stock' => $product['amount'],
                 'price' => $price, //round($product['list_price'] / $coefficient, 2)
                 'sale price' => $promo,
@@ -254,6 +256,8 @@ function fn_regargeting_get_prod($extra = null) {
             continue;
         }
 
+        $productImage = (!empty($product['main_pair']['detailed']['image_path'])) ? $product['main_pair']['detailed']['image_path'] : '';
+
         
         $product['amount'] = $product['amount'] > 0 ?
             $product['amount'] : fn_retargeting_get_addon_variable('retargeting_default_stock');
@@ -265,7 +269,7 @@ function fn_regargeting_get_prod($extra = null) {
             'product id' => $product['product_id'],
             'product name' => $product['product'],
             'product url' => fn_url('products.view?product_id=' . $product['product_id']),
-            'image url' => $product['main_pair']['detailed']['image_path'],
+            'image url' => fixUrl($productImage),
             'stock' => $product['amount'],
             'price' => $price, //round($product['list_price'] / $coefficient, 2)
             'sale price' => $promo,
@@ -369,4 +373,30 @@ function fn_retargeting_get_images($product) {
         }
     }
     return $images;
+}
+
+function fixUrl($url) {
+
+    $url = str_replace("&amp;", "&", $url);
+
+    $new_URL = explode("?", $url, 2);
+    $newURL = explode("/",$new_URL[0]);
+    
+    $checkHttp = !empty(array_intersect(["https:","http:"], $newURL));
+
+    foreach ($newURL as $k=>$v ){
+        if (!$checkHttp || $checkHttp && $k > 2) {
+            $newURL[$k] = rawurlencode($v);
+        }
+    }
+
+    if (isset($new_URL[1])) {
+        $new_URL[0] = implode("/",$newURL);
+        $new_URL[1] = str_replace("&amp;","&",$new_URL[1]);
+        return implode("?", $new_URL);
+    } else {
+        return implode("/",$newURL);
+    }
+    
+    return $url;
 }
