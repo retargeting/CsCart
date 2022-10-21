@@ -366,10 +366,10 @@ function fn_retargeting_get_images($product) {
     $additionalImages = fn_get_image_pairs($product['product_id'], 'product', 'A');
 
     $images = [];
-    $images[] = $product['main_pair']['detailed']['https_image_path'];
+    $images[] = fixUrl($product['main_pair']['detailed']['https_image_path']);
     if (is_array($additionalImages)) {
         foreach ($additionalImages as $image) {
-            $images[] = $image['detailed']['https_image_path'];
+            $images[] = fixUrl($image['detailed']['https_image_path']);
         }
     }
     return $images;
