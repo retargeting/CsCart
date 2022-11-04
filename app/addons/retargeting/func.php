@@ -261,6 +261,8 @@ function fn_regargeting_get_prod($extra = null) {
         
         $product['amount'] = $product['amount'] > 0 ?
             $product['amount'] : fn_retargeting_get_addon_variable('retargeting_default_stock');
+
+        $product['amount'] = !empty($product['amount']) ? $product['amount'] : 0;
 /*
         $price = fn_retargeting_get_price_to_default_currency($price);
         $promo = fn_retargeting_get_price_to_default_currency($promo);
