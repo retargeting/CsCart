@@ -49,8 +49,8 @@ function fn_retargeting_get_price($base_price, $price, $list_price) {
         $ra_price = $list_price;
     } elseif(($base_price == $price) && ($list_price < $base_price)) {
         $ra_price = $base_price;
-    } else {
-        $ra_price = $base_price;
+    }else{
+        $ra_price = $list_price;
     }
 
     return $ra_price;
