@@ -26,10 +26,6 @@
          <section id="general">
             <name>Retargeting Tracker Basic Settings</name>
             <items>
-               <item id="header">
-                  <type>header</type>
-                  <name>Retargeting Tracking Code</name>
-               </item>
                <item id="retargeting_domain_api">
                   <name>Tracking API Key</name>
                   <type>input</type>
@@ -55,10 +51,6 @@
          <section id="configuration">
             <name>Retargeting Tracker Options</name>
             <items>
-               <item id="header">
-                  <type>header</type>
-                  <name>JavaScript Query Selectors [Experimental]</name>
-               </item>
                <item id="retargeting_qs_addToCart">
                   <name>Add To Cart Button</name>
                   <type>input</type>
@@ -106,7 +98,41 @@
                   <default_value>EUR</default_value>
                   <variants/>
                </item>
-
+            </items>
+         </section>
+         <section id="recengine">
+            <name>Recommendation Engine</name>
+            <items>
+               <item id="rec_status">
+                  <name>Recommendation Engine</name>
+                  <type>selectbox</type>
+                  <default_value>0</default_value>
+               </item>
+               <item id="rec_template">
+                  <type>template</type>
+                  <default_value>settings.tpl</default_value>
+               </item>
+               <item id="home_page">
+                  <type>hidden</type>
+               </item>
+               <item id="category_page">
+                  <type>hidden</type>
+               </item>
+               <item id="product_page">
+                  <type>hidden</type>
+               </item>
+               <item id="shopping_cart">
+                  <type>hidden</type>
+               </item>
+               <item id="thank_you_page">
+                  <type>hidden</type>
+               </item>
+               <item id="search_page">
+                  <type>hidden</type>
+               </item>
+               <item id="page_404">
+                  <type>hidden</type>
+               </item>
             </items>
          </section>
       </sections>

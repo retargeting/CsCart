@@ -317,9 +317,7 @@
 
 		</script>
 	{/if}
-
-
-
+	<script type="text/javascript"> {$recengine nofilter} </script>
 {else}
 	<script type="text/javascript">
 		console.info("Retargeting Tracker Error: Please set the Domain API Key from your Retargeting Account.");

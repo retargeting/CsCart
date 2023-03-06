@@ -6,6 +6,208 @@ use Tygh\Settings;
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
+class Recengine {
+    private static $rec_engine = array(
+        "index.index" => "home_page",
+        "checkout.complete" => "thank_you_page", /* Importanta Ordinea checkout_onepage_success */
+
+        "checkout.cart" => "shopping_cart",
+        "checkout.checkout" => "shopping_cart",
+
+        "categories.view" => "category_page",
+
+        "products.view" => "product_page",
+
+        "products.search" => "search_page",
+        "_no_page" => "page_404"
+    );
+
+    /* TODO: RecEngine */
+    private static $def = array(
+        "value" => "",
+        "selector" => ".tygh-content",
+        "place" => "after"
+    );
+
+    private static $blocks = array(
+        'block_1' => array(
+            'title' => 'Block 1',
+            'def_rtg' => array(
+                "value"=>"",
+                "selector"=>".tygh-content",
+                "place"=>"before"
+            )
+        ),
+        'block_2' => array(
+            'title' => 'Block 2',
+        ),
+        'block_3' => array(
+            'title' => 'Block 3'
+        ),
+        'block_4' => array(
+            'title' => 'Block 4'
+        )
+    );
+
+    private static $fields = [
+        'home_page' => array(
+            'title' => 'Home Page',
+            'type'  => 'rec_engine'
+        ),
+        'category_page' => array(
+            'title' => 'Category Page',
+            'type'  => 'rec_engine'
+        ),
+        'product_page' => array(
+            'title' => 'Product Page',
+            'type'  => 'rec_engine'
+        ),
+        'shopping_cart' => array(
+            'title' => 'Shopping Cart',
+            'type'  => 'rec_engine'
+        ),
+        'thank_you_page' => array(
+            'title' => 'Thank you Page',
+            'type'  => 'rec_engine'
+        ),
+        'search_page' => array(
+            'title' => 'Search Page',
+            'type'  => 'rec_engine'
+        ),
+        'page_404' => array(
+            'title' => 'Page 404',
+            'type'  => 'rec_engine'
+        )
+    ];
+
+    public static function Update() {
+        foreach ($_POST['rec_data'] as $key => $value) {
+            Settings::instance()->updateValue($key, self::serialized($value), 'retargeting');
+        }
+
+        return false;
+    }
+
+    public static function serialized($value) {
+        return base64_encode(is_array($value) ? serialize($value) : array($value));
+    }
+
+    public static function unserialized($value) {
+        return unserialize(base64_decode($value));
+    }
+
+    public static function form($data) {
+        $form = array();
+
+        foreach (self::$fields as $row=>$selected) {
+            $key = $row;
+
+            $value = isset($data[$key]) && !empty($data[$key]) ? self::unserialized($data[$key]) : null;
+
+            if (!is_array($value)) {
+                $value = array();
+            }
+
+            $form[] = '<div id="container_addon_option_retargeting_rec_data_'.$key.'" class="control-group setting-wide  retargeting">
+                <label class="control-label ">
+                <strong>'.$selected['title'].'</strong>
+                </label>
+                <div class="controls" style="padding-top: 5px;">
+                ';   
+            foreach (self::$blocks as $k=>$v) {
+                
+                if (empty($value[$k]['value']) && empty($value[$k]['selector'])) {
+                    $def = isset($v['def_rtg']) ?
+                        $v['def_rtg'] : (isset($selected['def_rtg']) ? $selected['def_rtg'] : null);
+    
+                    $value[$k] = $def !== null ? $def : self::$def;
+                }
+    
+                $form[] = '<label for="addon_option_retargeting_rec_data_'.$key.'_'.$row.'_'.$k.'">
+                <strong>'.$v['title'].'</strong>
+                </label>';
+                $form[] = '<textarea style="min-width: 50%; height: 75px;" class="form-control"'.
+                        ' id="addon_option_retargeting_rec_data_'.$key.'_'.$row.'_'.$k.'" name="rec_data['.$key.']['.$k.'][value]" spellcheck="false">'.
+                        $value[$k]['value'].'</textarea>'."\n";
+    
+                $form[] = '<p><span><strong>'.
+                '<a href="javascript:void(0);" onclick="document.querySelectorAll(\'#'.$row.'_advace\').forEach((e)=>{e.style.display=e.style.display===\'none\'?\'block\':\'none\';});">'.
+                'Show/Hide Advance</a></strong></span></p>';
+    
+                $form[] = '<span id="'.$row.'_advace" style="display:none" >'.
+                        '<input style="width:100%; max-width:225px;display:inline;" class="form-control"'.
+                        ' id="'.$row.'_'.$k.'_adv_sel" type="text" name="rec_data['.$key.']['.$k.'][selector]" '.
+                        'value="'.$value[$k]['selector'].'" />'."\n";
+    
+                $form[] = '<select style="width:100%;max-width:100px;display:inline;" class="form-control" id="'.$row.'_'.$k.'_adv_opt" name="rec_data['.$key.']['.$k.'][place]">'."\n";
+    
+                foreach (['before', 'after'] as $v)
+                {
+                    $form[] = '<option value="'.$v.'"'.($value[$k]['place'] === $v ? ' selected="selected"' : '' );
+                    $form[] = '>'.$v.'</option>'."\n";  
+                }
+    
+                $form[] = '</select></span><br />'."\n";
+            }
+
+            $form[] = '</div>
+            </div>';
+        }
+        return implode("", $form);
+    }
+
+    public static function recstatus() {
+        return (bool) self::cfg();
+    }
+
+    public static function apistatus() {
+        return (Registry::get('addons.retargeting.status') == 'A');
+    }
+
+    public static function cfg($key = 'rec_status') {
+        
+        $v = Settings::instance()->getValue($key, 'retargeting');
+        $v = $key === 'rec_status' ? $v : self::unserialized($v);
+
+        if (is_array($v)) {
+            foreach($v as $k=>$vv) {
+                $v[$k]['value'] = html_entity_decode($vv['value']);
+            }
+        }
+
+        return $v;
+    }
+
+    public static function rec_engine_load($ActionName = null) {
+        if (self::apistatus() && self::recstatus()) {
+            if (isset(self::$rec_engine[$ActionName])) {
+                return '
+                var _ra_rec_engine = {};
+    
+                _ra_rec_engine.init = function () {
+                    let list = this.list;
+                    for (let key in list) {
+                        _ra_rec_engine.insert(list[key].value, list[key].selector, list[key].place);
+                    }
+                };
+    
+                _ra_rec_engine.insert = function (code = "", selector = null, place = "before") {
+                    if (code !== "" && selector !== null) {
+                        let newTag = document.createRange().createContextualFragment(code);
+                        let content = document.querySelector(selector);
+    
+                        content.parentNode.insertBefore(newTag, place === "before" ? content : content.nextSibling);
+                    }
+                };
+                _ra_rec_engine.list = '.json_encode(self::cfg(self::$rec_engine[$ActionName])).';
+                _ra_rec_engine.init();';
+            }
+        }
+        return "";
+    }
+}
+
+
 function fn_dir()
 {
 	return __DIR__;
@@ -74,6 +276,20 @@ function fn_settings_variants_addons_retargeting_retargeting_default_currency() 
 
     return $currenciesArray;
 }
+
+function fn_settings_variants_addons_retargeting_status() {
+    return [
+        'D'=>'Disabled',
+        'A'=>'Enabled'
+    ];
+}
+function fn_settings_variants_addons_retargeting_rec_status() {
+    return [
+        0=>'Disabled',
+        1=>'Enabled'
+    ];
+}
+
 function fn_settings_variants_addons_retargeting_retargeting_default_stock() {
     return [
         '1'=>'In Stock',
