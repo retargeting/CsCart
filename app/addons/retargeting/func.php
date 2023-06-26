@@ -524,6 +524,7 @@ function fn_retargeting_get_extra_data_product($product, $price, $promo) {
     $extraData['media_gallery'] = $img;
     $extraData['in_supplier_stock'] = null;
     $extraData['variations'] = null;
+    $extraData['weight'] = fn_retargeting_get_product_weight($product);
     
     foreach(fn_retargeting_get_category_name($product) as $k=>$v){
         $extraData['categories'][$k] = $v;
@@ -617,4 +618,29 @@ function fixUrl($url) {
     }
     
     return $url;
+}
+
+function fn_retargeting_get_product_weight($product){
+    $productWeight = isset($product['weight']) ? $product['weight'] : 0.1;
+    $productWeightMeasurmentUnit = fn_retargeting_get_product_weight_measurement_unit();
+
+    if (strtolower($productWeightMeasurmentUnit) !== 'kg') {
+        $productWeight = fn_retargeting_convert_Weight_To_Kg($productWeight,$productWeightMeasurmentUnit);
+    }
+
+    return floatval(number_format($productWeight,2,'.',','));
+}
+
+function fn_retargeting_get_product_weight_measurement_unit() {
+    return Registry::get('settings.General.weight_symbol');
+}
+
+function fn_retargeting_convert_Weight_To_Kg($weight,$unit) {
+    if(strtolower($unit) === 'g') {
+        return $weight/1000;
+    }else if(strtolower($unit) === 'lb' || strtolower($unit) === 'lbs') {
+        return $weight*0.45359237;
+    }else if(strtolower($unit) === 'oz') {
+        return $weight/35.27396195;
+    } else return $weight;
 }
