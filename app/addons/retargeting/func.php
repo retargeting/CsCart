@@ -376,6 +376,14 @@ function fn_regargeting_get_products($items = 250) {
             $price = round($ra_price / $coefficient, 2);
             $promo = round($ra_promo / $coefficient, 2);
 
+            if($promo == 0) {
+                $promo = $price - fn_get_promotion_value($product);
+            }
+
+            if ($price == 0 ) {
+                $price = $promo + fn_get_promotion_value($product);
+            }
+
             if($price == 0 || $promo == 0 ||
                 !isset($product['main_pair']) ||
                 empty($product['main_pair']['detailed']['image_path'])) {
@@ -406,6 +414,16 @@ function fn_regargeting_get_products($items = 250) {
         }
     }
     return $newList;
+}
+
+function fn_get_promotion_value($product) {
+    $keys = array_keys($product['promotions']);
+    $discount_value = 0;
+    foreach ($keys as $key) {
+        for ($i = 0; $i<count($product['promotions'][$key]['bonuses']);$i++)
+            $discount_value = $discount_value + $product['promotions'][$key]['bonuses'][$i]['discount'];
+    }
+    return $discount_value;
 }
 
 function fn_regargeting_get_prod($extra = null) {
