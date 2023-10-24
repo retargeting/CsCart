@@ -39,7 +39,7 @@ if ($mode == 'complete') {
         "lastname" => $order_info['lastname'],
         "firstname" => $order_info['firstname'],
         "email" => $order_info['email'],
-        "phone" => $order_info['phone'],
+        "phone" => $order_info['phone'] ?? '',
         "state" => $order_info['s_country'],
         "city" => $order_info['s_city'],
         "address" => $order_info['b_address'],
