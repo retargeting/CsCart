@@ -12,7 +12,7 @@
    <compatibility>
       <php_version>
          <min>5.6.0</min>
-         <max>7.5.0</max>
+         <max>8.2</max>
       </php_version>
       <core_version>
          <min>4.2.0</min>
