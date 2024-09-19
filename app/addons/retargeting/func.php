@@ -408,7 +408,7 @@ function fn_regargeting_get_products($items = 250) {
                 'price' => $price, //round($product['list_price'] / $coefficient, 2)
                 'sale price' => $promo,
                 'brand' => '',
-                'category' => $category_name,
+                'category' => json_encode($category_name),
                 'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
             ];
         }
@@ -510,7 +510,7 @@ function fn_regargeting_get_prod($extra = null) {
             'price' => $price, //round($product['list_price'] / $coefficient, 2)
             'sale price' => $promo,
             'brand' => '',
-            'category' => $category_name,
+            'category' => json_encode($category_name),
             'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
         ];
     }
