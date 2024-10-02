@@ -401,14 +401,14 @@ function fn_regargeting_get_products($items = 250) {
     */
             $newList[] = [
                 'product id' => $product['product_id'],
-                'product name' => $product['product'],
+                'product name' => htmlspecialchars($product['product']),
                 'product url' => fn_url('products.view?product_id=' . $product['product_id']),
                 'image url' => fixUrl($productImage),
                 'stock' => $product['amount'],
                 'price' => $price, //round($product['list_price'] / $coefficient, 2)
                 'sale price' => $promo,
                 'brand' => '',
-                'category' => json_encode($category_name),
+                'category' => htmlspecialchars($category_name),
                 'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
             ];
         }
@@ -503,14 +503,14 @@ function fn_regargeting_get_prod($extra = null) {
 */
         $extra['list'][] = [
             'product id' => $product['product_id'],
-            'product name' => $product['product'],
+            'product name' => htmlspecialchars($product['product']),
             'product url' => fn_url('products.view?product_id=' . $product['product_id']),
             'image url' => fixUrl($productImage),
             'stock' => $product['amount'],
             'price' => $price, //round($product['list_price'] / $coefficient, 2)
             'sale price' => $promo,
             'brand' => '',
-            'category' => json_encode($category_name),
+            'category' => htmlspecialchars($category_name),
             'extra data' => json_encode(fn_retargeting_get_extra_data_product($product, $price, $promo))
         ];
     }
